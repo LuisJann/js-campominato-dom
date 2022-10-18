@@ -25,29 +25,26 @@ Di cosa ho bisogno per generare i numeri?
 Proviamo sempre prima con dei console.log() per capire se stiamo ricevendo i dati giusti.
 Le validazioni e i controlli possiamo farli anche in un secondo momento.. */
 
-// ESECUZIONE
+//VAR
 let arrayNumber = [];
+let arrayBomb = [];
 const playBtn = document.getElementById("play-btn");
 console.log(playBtn);
-let numberGrid = "";
 const level = document.getElementById("selector");
 console.log(level);
 let i = 0;
 
-
-
-
-
-
+//ESECUZIONE
 playBtn.addEventListener("click", function () {
-  const arrayBomb = [];
+  console.log("Nuova Partita!");
+  arrayBomb = [];
   arrayNumber = [];
   const moveCounter = document.getElementById("counter");
   let q = 0;
   moveCounter.innerHTML = `Mossa n° ${q}`
 
+//selezione il numeor di riquadri che voglio nella mia griglia
   const leveleSelected = parseInt(level.value);
-  console.log(leveleSelected);
   if (leveleSelected === 1) {
     numberGrid = 100;
     console.log(numberGrid, "level 1");
@@ -59,7 +56,7 @@ playBtn.addEventListener("click", function () {
     console.log(numberGrid, "level 3");
   }
 
-
+//genero le bombe nel range del numero di caselle selezionato prima
   for (let l = 0; arrayBomb.length < 16; l++) {
     const getRndNumber = Math.floor(Math.random() * (numberGrid - 1 + 1)) + 1;
     if (!arrayBomb.includes(getRndNumber)) {
@@ -68,13 +65,15 @@ playBtn.addEventListener("click", function () {
   }
   console.log(arrayBomb);
   
+  //azzero html per reset
   const row = document.querySelector(".row");
   row.innerHTML = "";
+
+  //creo l'array in cui sono presenti il numero di caselle
   while (i < numberGrid) {
     arrayNumber.push(i + 1);
     i++
   }
-  console.log(arrayNumber);
   
   for (i = 0; i < arrayNumber.length; i++) {
     const thisNumber = arrayNumber[i];
@@ -83,16 +82,21 @@ playBtn.addEventListener("click", function () {
     const thisSquare = createSquare(thisNumber);
     
     // aggiungo eventListener allo square creato e aggiungo classe "bg-color-blu" 
-    //se non è una bomba, aggingo "bg-color-red" se è una bomba, aggiono il contatore.
+    //se non è una bomba, aggingo "bg-color-red" se è una bomba, aggiorno il contatore mosse.
     thisSquare.addEventListener("click", function () {
+      console.log(this.classList.length, "prima di if");
       if (arrayBomb.includes(thisNumber)){
         this.classList.add("bg-color-red");
         console.log(thisNumber, "BOOOOM");
       }else{
-        this.classList.add("bg-color-blu");
-        console.log(thisNumber);
-        moveCounter.innerHTML = `Mossa n° ${q+1}`;
-        q++
+        if(this.classList.length <= 1){
+          this.classList.add("bg-color-blu");
+          console.log(this.classList.length);
+          moveCounter.innerHTML = `Mossa n° ${q+1}`;
+          q++
+        } else {
+          moveCounter.innerHTML = `Mossa n° ${q}`
+        }
       }
     });
     // inserisco l'elemento nel DOM
@@ -100,6 +104,8 @@ playBtn.addEventListener("click", function () {
   }
 })
 
+
+// FUNCTION
 
 /**
  * Description: La funzione che crea l'elemento square da inserire nel dom

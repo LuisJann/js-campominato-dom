@@ -27,7 +27,6 @@ Le validazioni e i controlli possiamo farli anche in un secondo momento.. */
 
 // ESECUZIONE
 const arrayNumber = [];
-const arrayBomb = [];
 const playBtn = document.getElementById("play-btn");
 console.log(playBtn);
 let numberGrid = "";
@@ -37,8 +36,8 @@ let i = 0;
 
 
 
-
 playBtn.addEventListener("click", function () {
+  const arrayBomb = [];
 
   const leveleSelected = parseInt(level.value);
   console.log(leveleSelected);
@@ -53,25 +52,23 @@ playBtn.addEventListener("click", function () {
     console.log(numberGrid, "level 3");
   }
 
-  //genero le 16 bombe e le assegno ad un array con numeri casuali ogni volta ma non ripetuti
-  
   for (let l = 0; arrayBomb.length < 16; l++) {
-    getRndNumber = Math.floor(Math.random() * (numberGrid - 1 + 1)) + 1;
+    const getRndNumber = Math.floor(Math.random() * (numberGrid - 1 + 1)) + 1;
     if (!arrayBomb.includes(getRndNumber)) {
       arrayBomb.push(getRndNumber);
     }
   }
-  console.log(arrayBomb, "arrayBomb");
-
+  console.log(arrayBomb);
+  
   const row = document.querySelector(".row");
   row.innerHTML = "";
-
+  
   while (i < numberGrid) {
     arrayNumber.push(i + 1);
     i++
   }
   console.log(arrayNumber);
-
+  
   for (i = 0; i < arrayNumber.length; i++) {
     const thisNumber = arrayNumber[i];
 
@@ -79,16 +76,19 @@ playBtn.addEventListener("click", function () {
     const thisSquare = createSquare(thisNumber);
     // aggiungo eventListener allo square creato e aggiungo classe "bg-color-blu"
     thisSquare.addEventListener("click", function () {
-      this.classList.toggle("bg-color-blu");
-      console.log(thisNumber);
+      if (arrayBomb.includes(thisNumber)){
+        this.classList.add("bg-color-red");
+        console.log(thisNumber, "BOOOOM");
+      }else{
+        this.classList.toggle("bg-color-blu");
+        console.log(thisNumber);
+      }
     });
 
     // inserisco l'elemento nel DOM
     row.append(thisSquare);
   }
 })
-
-
 
 
 /**

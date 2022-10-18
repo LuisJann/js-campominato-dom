@@ -26,7 +26,7 @@ Proviamo sempre prima con dei console.log() per capire se stiamo ricevendo i dat
 Le validazioni e i controlli possiamo farli anche in un secondo momento.. */
 
 // ESECUZIONE
-const arrayNumber = [];
+let arrayNumber = [];
 const playBtn = document.getElementById("play-btn");
 console.log(playBtn);
 let numberGrid = "";
@@ -36,8 +36,15 @@ let i = 0;
 
 
 
+
+
+
 playBtn.addEventListener("click", function () {
   const arrayBomb = [];
+  arrayNumber = [];
+  const moveCounter = document.getElementById("counter");
+  let q = 0;
+  moveCounter.innerHTML = `Mossa n° ${q}`
 
   const leveleSelected = parseInt(level.value);
   console.log(leveleSelected);
@@ -52,6 +59,7 @@ playBtn.addEventListener("click", function () {
     console.log(numberGrid, "level 3");
   }
 
+
   for (let l = 0; arrayBomb.length < 16; l++) {
     const getRndNumber = Math.floor(Math.random() * (numberGrid - 1 + 1)) + 1;
     if (!arrayBomb.includes(getRndNumber)) {
@@ -62,7 +70,6 @@ playBtn.addEventListener("click", function () {
   
   const row = document.querySelector(".row");
   row.innerHTML = "";
-  
   while (i < numberGrid) {
     arrayNumber.push(i + 1);
     i++
@@ -74,17 +81,20 @@ playBtn.addEventListener("click", function () {
 
     // Creo un elemento square
     const thisSquare = createSquare(thisNumber);
-    // aggiungo eventListener allo square creato e aggiungo classe "bg-color-blu"
+    
+    // aggiungo eventListener allo square creato e aggiungo classe "bg-color-blu" 
+    //se non è una bomba, aggingo "bg-color-red" se è una bomba, aggiono il contatore.
     thisSquare.addEventListener("click", function () {
       if (arrayBomb.includes(thisNumber)){
         this.classList.add("bg-color-red");
         console.log(thisNumber, "BOOOOM");
       }else{
-        this.classList.toggle("bg-color-blu");
+        this.classList.add("bg-color-blu");
         console.log(thisNumber);
+        moveCounter.innerHTML = `Mossa n° ${q+1}`;
+        q++
       }
     });
-
     // inserisco l'elemento nel DOM
     row.append(thisSquare);
   }

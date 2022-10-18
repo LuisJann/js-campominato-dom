@@ -82,12 +82,12 @@ playBtn.addEventListener("click", function () {
     const thisSquare = createSquare(thisNumber);
     
     // aggiungo eventListener allo square creato e aggiungo classe "bg-color-blu" 
-    //se non è una bomba, aggingo "bg-color-red" se è una bomba, aggiorno il contatore mosse.
+    //se non è una bomba, aggingo "bg-color-red" se è una bomba, aggiorno il contatore mosse solo se non è già blu.
     thisSquare.addEventListener("click", function () {
-      console.log(this.classList.length, "prima di if");
       if (arrayBomb.includes(thisNumber)){
         this.classList.add("bg-color-red");
         console.log(thisNumber, "BOOOOM");
+        moveCounter.innerHTML = `HAI TOTALIZZATO ${q} PUNTI`
       }else{
         if(this.classList.length <= 1){
           this.classList.add("bg-color-blu");
